@@ -1,8 +1,8 @@
 package ru.job4j.tracker.oop;
 
 public class Student {
-    public void music() {
-        System.out.println("I believe I can fly");
+    public void music(String lyrics) {
+        System.out.println("I can sign a song : " + lyrics);
     }
 
     public void accordion() {
@@ -11,11 +11,7 @@ public class Student {
 
     public static void main(String[] args) {
         Student petya = new Student();
-        petya.accordion();
-        petya.accordion();
-        petya.accordion();
-        petya.music();
-        petya.music();
-        petya.music();
+        String song = "I believe, I can fly";
+        petya.music(song);
     }
 }
