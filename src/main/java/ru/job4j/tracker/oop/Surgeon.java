@@ -1,5 +1,5 @@
 package ru.job4j.tracker.oop;
-
+/*
 public class Surgeon extends Doctor{
     private String dateOfSurgery;
 
@@ -7,3 +7,4 @@ public class Surgeon extends Doctor{
 
     }
 }
+*/
