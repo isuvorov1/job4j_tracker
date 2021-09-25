@@ -54,11 +54,11 @@ public class Tracker {
         Item[] rsl = new Item[items.length];
         int size = 0;
         for (Item itemCount : items) {
-                if (itemCount != null && itemCount.getName().equals(key)) {
-                    rsl[size] = itemCount;
-                    size++;
-                }
+            if (itemCount != null && itemCount.getName().equals(key)) {
+                rsl[size] = itemCount;
+                size++;
             }
+        }
         rsl = Arrays.copyOf(rsl, size);
         return rsl;
     }
