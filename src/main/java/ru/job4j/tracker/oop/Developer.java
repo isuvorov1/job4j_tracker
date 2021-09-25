@@ -1,5 +1,5 @@
 package ru.job4j.tracker.oop;
-/*
+
 public class Developer {
     private String companyName;
 
@@ -7,4 +7,3 @@ public class Developer {
 
     }
 }
-*/
