@@ -1,9 +1,12 @@
 package ru.job4j.tracker;
 
+import org.hamcrest.Matchers;
+import org.hamcrest.core.IsNull;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.nullValue;
 
 public class StartUITest {
     @Test
@@ -29,6 +32,19 @@ public class StartUITest {
         StartUI.editItem(new StubInput(answers), tracker);
         Item replaced = tracker.findById(item.getId());
         assertThat(replaced.getName(), is("replaced item"));
+    }
+
+    @Test
+    public void whenDeleteItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("new item");
+        String[] answers = {
+                String.valueOf(item.getId()), /* id сохраненной заявки в объект tracker. */
+                "deleted item"
+        };
+        tracker.delete(item.getId());
+        StartUI.deleteItem(new StubInput(answers), tracker);
+        assertThat(tracker.findById(item.getId()), Matchers.is(IsNull.nullValue()));
     }
 }
 
