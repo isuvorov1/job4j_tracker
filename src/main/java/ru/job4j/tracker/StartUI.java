@@ -78,7 +78,7 @@ public class StartUI {
 
     public static void deleteItem(Input input, Tracker tracker) {
         System.out.println("=== Delete an item ===" + System.lineSeparator());
-        int id = Integer.valueOf(input.askStr("Enter item's ID: "));
+        int id = input.askInt("Enter item's ID: ");
         tracker.delete(id);
         if (tracker.delete(id)) {
             System.out.println("Заявка удалена успешно.");
@@ -89,7 +89,7 @@ public class StartUI {
 
     public static void findItemByID(Input input, Tracker tracker) {
         System.out.println("=== Find an item by ID ===" + System.lineSeparator());
-        int id = Integer.valueOf(input.askStr("Enter ID: "));
+        int id = input.askInt("Enter ID: ");
         tracker.findById(id);
         Item item = tracker.findById(id);
         if (item != null) {
