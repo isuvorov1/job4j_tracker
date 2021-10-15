@@ -13,10 +13,8 @@ public class FindById implements UserAction {
         Item item = tracker.findById(id);
         if (item != null) {
             System.out.println(item);
-            return true;
         } else {
             System.out.println("Item with this id: " + id + " could not be found.");
-            return false;
-        }
+        } return true;
     }
 }

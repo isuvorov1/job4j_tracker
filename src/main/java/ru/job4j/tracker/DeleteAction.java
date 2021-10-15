@@ -13,10 +13,9 @@ public class DeleteAction implements UserAction {
         tracker.delete(id);
         if (tracker.delete(id)) {
             System.out.println("Delete success.");
-            return true;
         } else {
             System.out.println("Delete fail.");
-            return false;
         }
+        return true;
     }
 }

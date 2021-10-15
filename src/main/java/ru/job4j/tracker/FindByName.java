@@ -15,10 +15,8 @@ public class FindByName implements UserAction {
             for (Item item : items) {
                 System.out.println(item);
             }
-            return true;
         } else {
             System.out.println("Item(s) with this name: " + name + " could not be found.");
-            return false;
-        }
+        } return true;
     }
 }
