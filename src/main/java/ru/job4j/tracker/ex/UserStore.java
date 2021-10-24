@@ -21,14 +21,12 @@ public class UserStore {
         };
         try {
             User user = findUser(users, "Petr Arsentev");
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (validate(users[0])) {
+            if (validate(user)) {
                 System.out.println("This user has an access");
             }
         } catch (UserInvalidException e) {
+            e.printStackTrace();
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
         }
     }
