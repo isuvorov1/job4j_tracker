@@ -6,13 +6,13 @@ public class UserStore {
                if (user.getUsername().equals(login)) {
                    return user;
                }
-            } return null;
+            } throw new UserNotFoundException("User not found");
         }
 
     public static boolean validate(User user) throws UserInvalidException {
             if (user.isValid() || user.getUsername().length() >= 3) {
                 return true;
-            } return false;
+            } throw new UserInvalidException("User not valid");
         }
 
     public static void main(String[] args) {
