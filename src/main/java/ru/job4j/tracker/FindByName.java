@@ -20,6 +20,7 @@ public class FindByName implements UserAction {
             }
         } else {
             System.out.println("Item(s) with this name: " + name + " could not be found.");
-        } return true;
+        }
+        return true;
     }
 }
