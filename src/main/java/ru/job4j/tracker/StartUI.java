@@ -1,28 +1,32 @@
 package ru.job4j.tracker;
 
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
+import java.util.Properties;
 
 public class StartUI {
-    private final Output out;
+    private Output out;
 
     public StartUI(Output out) {
         this.out = out;
     }
 
-    public void init(Input input, Tracker tracker, List<UserAction> actions) {
-        boolean run = true;
-        while (run) {
-            this.showMenu(actions);
-            int select = input.askInt("Select: ");
-            if (select < 0 || select >= actions.size()) {
-                out.println("Wrong input, you can select: 0 .. " + (actions.size() - 1));
-                continue;
-            }
-            UserAction action = actions.get(select);
-            run = action.execute(input, tracker);
+    public void init(Input input, SqlTracker tracker, List<UserAction> actions) {
+        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
+            Properties config = new Properties();
+            config.load(in);
+            Class.forName(config.getProperty("driver-class-name"));
+            Connection cn = DriverManager.getConnection(
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
     }
-
     private void showMenu(List<UserAction> actions) {
         out.println("Menu.");
         for (int index = 0; index < actions.size(); index++) {
@@ -31,18 +35,22 @@ public class StartUI {
     }
 
     public static void main(String[] args) {
+        Input input = new ValidateInput(new ConsoleInput());
         Output output = new ConsoleOutput();
-        Input input = new ValidateInput();
-        Tracker tracker = new Tracker();
-        List<UserAction> actions = List.of(
-                new CreateAction(output),
-                new Exit(),
-                new DeleteAction(),
-                new ReplaceAction(),
-                new FindAllAction(),
-                new FindById(),
-                new FindByName()
-        );
-        new StartUI(output).init(input, tracker, actions);
+        try (SqlTracker tracker = new SqlTracker()) {
+            tracker.init();
+            List<UserAction> actions = List.of(
+                    new CreateAction(output),
+                    new ReplaceAction(output),
+                    new DeleteAction(output),
+                    new FindAllAction(output),
+                    new FindByIdAction(output),
+                    new FindByNameAction(output),
+                    new ExitAction(output)
+            );
+            new StartUI(output).init(input, tracker, actions);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

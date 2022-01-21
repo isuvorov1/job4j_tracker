@@ -1,22 +1,28 @@
 package ru.job4j.tracker;
 
 public class ReplaceAction implements UserAction {
-    @Override
-    public String name() {
-        return "Replace existing Item";
+    private final Output out;
+
+    public ReplaceAction(Output out) {
+        this.out = out;
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
-        System.out.println("=== Replace existing Item ====");
-        int id = input.askInt("Enter id: ");
+    public String name() {
+        return ">>> Edit an item";
+    }
+
+    @Override
+    public boolean execute(Input input, Store memTracker) {
+        int id = Integer.parseInt(input.askStr("Enter ID to replace: "));
+        out.println(System.lineSeparator());
         String name = input.askStr("Enter name: ");
-        Item item = new Item(name);
-        tracker.replace(id, item);
-        if (tracker.replace(id, item)) {
-            System.out.println("Replace success.");
+        Item item = new Item(id, name);
+        if (memTracker.replace(id, item)) {
+            out.println(System.lineSeparator() + "Record updated." + System.lineSeparator());
         } else {
-            System.out.println("Replace fail.");
+            out.println(System.lineSeparator() + "ERROR!" + System.lineSeparator()
+                    + "ID \"" + id + "\" doesn't exist." + System.lineSeparator());
         }
         return true;
     }

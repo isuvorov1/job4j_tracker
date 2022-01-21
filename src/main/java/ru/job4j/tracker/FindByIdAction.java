@@ -1,26 +1,26 @@
 package ru.job4j.tracker;
 
-public class DeleteAction implements UserAction {
+public class FindByIdAction implements UserAction {
     private final Output out;
 
-    public DeleteAction(Output out) {
+    public FindByIdAction(Output out) {
         this.out = out;
     }
 
     @Override
     public String name() {
-        return "Delete an existing item";
+        return  "Find an item by ID";
     }
 
     @Override
     public boolean execute(Input input, Store memTracker) {
-        int id = Integer.parseInt(input.askStr("Enter item's ID: "));
-        if (memTracker.delete(id)) {
-            out.println(System.lineSeparator() + "ID " + id + " deleted."
-                    + System.lineSeparator());
-        } else {
+        int id = Integer.parseInt(input.askStr("Enter ID: "));
+        Item check = memTracker.findById(id);
+        if (check == null) {
             out.println(System.lineSeparator() + "ERROR!" + System.lineSeparator()
                     + "ID \"" + id + "\" doesn't exist." + System.lineSeparator());
+        } else {
+            out.println(System.lineSeparator() + check + System.lineSeparator());
         }
         return true;
     }
