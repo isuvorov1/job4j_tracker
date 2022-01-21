@@ -13,7 +13,7 @@ public class StartUI {
         this.out = out;
     }
 
-    public void init(Input input, SqlTracker tracker, List<UserAction> actions) {
+    public void init() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
@@ -27,6 +27,7 @@ public class StartUI {
             throw new IllegalStateException(e);
         }
     }
+
     private void showMenu(List<UserAction> actions) {
         out.println("Menu.");
         for (int index = 0; index < actions.size(); index++) {
@@ -48,7 +49,7 @@ public class StartUI {
                     new FindByNameAction(output),
                     new ExitAction(output)
             );
-            new StartUI(output).init(input, tracker, actions);
+            new StartUI(output).init();
         } catch (Exception e) {
             e.printStackTrace();
         }
