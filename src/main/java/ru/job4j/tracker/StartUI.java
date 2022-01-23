@@ -13,18 +13,13 @@ public class StartUI {
         this.out = out;
     }
 
-    public void init() {
-        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
-            Properties config = new Properties();
-            config.load(in);
-            Class.forName(config.getProperty("driver-class-name"));
-            Connection cn = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("username"),
-                    config.getProperty("password")
-            );
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+    public void init(Input input, Store tracker, List<UserAction> actions) throws Exception {
+        boolean run = true;
+        while (run) {
+            showMenu(actions);
+            int select = input.askInt("Enter select: ");
+            UserAction action = actions.get(select);
+            run = action.execute(input, tracker);
         }
     }
 
@@ -35,23 +30,21 @@ public class StartUI {
         }
     }
 
-    public static void main(String[] args) {
-        Input input = new ValidateInput(new ConsoleInput());
+    public static void main(String[] args) throws Exception {
+        Input validate = new ValidateInput(
+                new ConsoleInput()
+        );
         Output output = new ConsoleOutput();
-        try (SqlTracker tracker = new SqlTracker()) {
-            tracker.init();
-            List<UserAction> actions = List.of(
-                    new CreateAction(output),
-                    new ReplaceAction(output),
-                    new DeleteAction(output),
-                    new FindAllAction(output),
-                    new FindByIdAction(output),
-                    new FindByNameAction(output),
-                    new ExitAction(output)
-            );
-            new StartUI(output).init();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<UserAction> actions = List.of(
+                new CreateAction(output),
+                new ReplaceAction(output),
+                new DeleteAction(output),
+                new FindAllAction(output),
+                new FindByIdAction(output),
+                new FindByNameAction(output),
+                new ExitAction(output)
+        );
+        MemTracker tracker = new MemTracker();
+        new StartUI(output).init(validate, (Store) tracker, actions);
     }
 }
