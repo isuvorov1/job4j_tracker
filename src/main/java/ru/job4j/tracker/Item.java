@@ -2,12 +2,13 @@ package ru.job4j.tracker;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Item implements Comparable<Item> {
     private int id;
     private String name;
-    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
     private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
     public Item(int id, String name, LocalDateTime created) {
