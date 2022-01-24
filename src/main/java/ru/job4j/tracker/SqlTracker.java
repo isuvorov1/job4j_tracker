@@ -97,8 +97,7 @@ public class SqlTracker implements Store, AutoCloseable {
             e.printStackTrace();
 
         }
-        return items.stream().sorted(Comparator.comparing(Item::getId))
-                .collect(Collectors.toList());
+        return items;
     }
 
     @Override
