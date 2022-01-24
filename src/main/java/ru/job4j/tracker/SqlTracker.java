@@ -105,7 +105,7 @@ public class SqlTracker implements Store, AutoCloseable {
     public List<Item> findByName(String key) {
         List<Item> items = new ArrayList<>();
         try (PreparedStatement statement =
-                     cn.prepareStatement("select * from items where name = ?")) {
+                     cn.prepareStatement("select * from items order by id asc where name = ?")) {
             statement.setString(1, key);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -116,8 +116,7 @@ public class SqlTracker implements Store, AutoCloseable {
             e.printStackTrace();
 
         }
-        return items.stream().sorted(Comparator.comparing(Item::getId))
-                .collect(Collectors.toList());
+        return items;
     }
 
     @Override
