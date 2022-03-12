@@ -1,21 +1,28 @@
 package ru.job4j.tracker;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+@Entity
+@Table(name = "items")
 public class Item implements Comparable<Item> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
+
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
-    private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
     public Item(int id, String name, LocalDateTime created) {
         this.id = id;
         this.name = name;
         this.created = created;
     }
+
     public Item() {
 
     }
@@ -71,7 +78,7 @@ public class Item implements Comparable<Item> {
     @Override
     public String toString() {
         return "Item{" + "id=" + id + ", name='" + name
-                + '\'' + ", created=" + created.format(format) + '}';
+                + '\'' + ", created=" + created + '}';
     }
 
     @Override
