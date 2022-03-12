@@ -6,75 +6,34 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class HibernateRun {
     public static void main(String[] args) {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
         try {
-            SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-            Item item = create(new Item("Learn Hibernate"), sf);
-            System.out.println(item);
-            item.setName("Learn Hibernate 5.");
-            update(item, sf);
-            System.out.println(item);
-            Item rsl = findById(item.getId(), sf);
-            System.out.println(rsl);
-            delete(rsl.getId(), sf);
-            List<Item> list = findAll(sf);
-            for (Item it : list) {
-                System.out.println(it);
-            }
-        }  catch (Exception e) {
+            SessionFactory sf = new MetadataSources(registry)
+                    .buildMetadata()
+                    .buildSessionFactory();
+            Session session = sf.openSession();
+            session.beginTransaction();
+
+            Item item1 = new Item("Ivan", LocalDateTime.now(), "User");
+            Item item2 = new Item("Petr", LocalDateTime.now(), "Admin");
+            Item item3 = new Item("Maria", LocalDateTime.now(), "User");
+
+
+            session.save(item1);
+            session.save(item2);
+            session.save(item3);
+
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }
-    }
-
-    public static Item create(Item item, SessionFactory sf) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(item);
-        session.getTransaction().commit();
-        session.close();
-        return item;
-    }
-
-    public static void update(Item item, SessionFactory sf) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.update(item);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    public static void delete(Integer id, SessionFactory sf) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Item item = new Item(null);
-        item.setId(id);
-        session.delete(item);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    public static List<Item> findAll(SessionFactory sf) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List result = session.createQuery("from ru.job4j.tracker.Item").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
-    }
-
-    public static Item findById(Integer id, SessionFactory sf) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Item result = session.get(Item.class, id);
-        session.getTransaction().commit();
-        session.close();
-        return result;
     }
 }

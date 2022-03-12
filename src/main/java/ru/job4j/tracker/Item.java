@@ -11,11 +11,32 @@ import java.util.Objects;
 public class Item implements Comparable<Item> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "created")
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
+
+    public Item(String name, LocalDateTime created, String description) {
+        this.name = name;
+        this.created = created;
+        this.description = description;
+    }
+
+    public Item() {
+
+    }
+
+    public Item(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Item(int id, String name, LocalDateTime created) {
         this.id = id;
@@ -23,16 +44,7 @@ public class Item implements Comparable<Item> {
         this.created = created;
     }
 
-    public Item() {
-
-    }
-
     public Item(String name) {
-        this.name = name;
-    }
-
-    public Item(int id, String name) {
-        this.id = id;
         this.name = name;
     }
 
@@ -50,6 +62,14 @@ public class Item implements Comparable<Item> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getCreated() {
@@ -72,13 +92,13 @@ public class Item implements Comparable<Item> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, description);
     }
 
     @Override
     public String toString() {
         return "Item{" + "id=" + id + ", name='" + name
-                + '\'' + ", created=" + created + '}';
+                + '\'' + ", created=" + created + ", description=" + description + '}';
     }
 
     @Override
